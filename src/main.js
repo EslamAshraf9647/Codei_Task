@@ -21,4 +21,5 @@ const bootStrap = async () => {
       })
 }
 
+
 export default bootStrap
