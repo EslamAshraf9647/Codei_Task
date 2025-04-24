@@ -1,4 +1,5 @@
  
+import { cloudinary } from "../../../Config/config.cloudinary.js";
 import CourseModel from "../../../DB/models/course.model.js";
 
  export const AddNewCourse = async (req ,res ) => {
@@ -8,12 +9,19 @@ import CourseModel from "../../../DB/models/course.model.js";
         return res.status(400).json({message:"No file uploaded"})
     }
 
-    const url = `${req.protocol}://${req.headers.host}/${file.path}`
+     const {secure_url , public_id} = await cloudinary().uploader.upload(file.path,{
+        folder:`${process.env.CLOUDINARY_FOLDER}/courses`,
+        resource_type:'image',
+    })
+   
    
     const course = new CourseModel({
         title,
         description,
-        image:url,
+        image:{
+                secure_url,
+                public_id
+        },
         startDate,
         endDate,
         price

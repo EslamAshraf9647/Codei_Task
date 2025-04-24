@@ -2,17 +2,17 @@ import { Router } from "express";
 import * as courseService from '../Course/services/course.service.js'
 import { errorhandler } from "../../Middleware/error-handler.middleware.js";
 import { authenticationMiddleware } from "../../Middleware/authentication.middleware.js";
-import { Multer } from "../../Middleware/multer.middleware.js";
 import { ImageExtension } from "../../Constants/constants.js";
 import { ValidationMiddleware } from "../../Middleware/validation.moddleware.js";
 import { AddNewCourseSchema } from "../../Validators/Course/course.vaildators.js";
+import { MulterCloud } from "../../Middleware/multer.middleware.js";
 
 
 const courseController = Router()
 
 courseController.post('/addCourse',
-    errorhandler(authenticationMiddleware()),
-    Multer('Course/image',ImageExtension).single('image'),
+    // errorhandler(authenticationMiddleware()),
+    MulterCloud('Course/image',ImageExtension).single('image'),
     errorhandler(courseService.AddNewCourse),
     errorhandler(ValidationMiddleware(AddNewCourseSchema))
 )
